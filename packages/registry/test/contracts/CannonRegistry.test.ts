@@ -39,9 +39,8 @@ describe('CannonRegistry', function () {
 
     const { events } = await tx.wait();
 
-    equal(events.length, 2);
-    equal(events[0].event, 'ProtocolCreate');
-    equal(events[1].event, 'ProtocolPublish');
+    equal(events.length, 1);
+    equal(events[0].event, 'ProtocolPublish');
   });
 
   it('should be able to publish new version', async function () {

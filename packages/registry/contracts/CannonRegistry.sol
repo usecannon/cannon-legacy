@@ -5,8 +5,7 @@ contract CannonRegistry {
   error Unauthorized();
   error InvalidUrl();
 
-  event ProtocolCreate(bytes32 name);
-  event ProtocolPublish(bytes32 name, bytes32 version, string url);
+  event ProtocolPublish(bytes32 name, bytes32 version, string url, address owner);
 
   mapping(bytes32 => mapping(bytes32 => string)) images;
   mapping(bytes32 => address) owners;
@@ -26,8 +25,6 @@ contract CannonRegistry {
     if (owners[_name] == address(0)) {
       owners[_name] = msg.sender;
       protocols.push(_name);
-
-      emit ProtocolCreate(_name);
     }
 
     if (bytes(images[_name][_version]).length == 0) {
@@ -36,7 +33,7 @@ contract CannonRegistry {
 
     images[_name][_version] = _url;
 
-    emit ProtocolPublish(_name, _version, _url);
+    emit ProtocolPublish(_name, _version, _url, msg.sender);
   }
 
   function getProtocols() view external returns (bytes32[] memory) {
