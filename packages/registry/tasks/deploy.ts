@@ -1,3 +1,5 @@
+import fs from 'fs/promises';
+import path from 'path';
 import { task } from 'hardhat/config';
 
 task('deploy')
@@ -8,6 +10,11 @@ task('deploy')
     await contract.deployed();
 
     console.log('Contract deployed to:', contract.address);
+
+    await fs.writeFile(
+      path.resolve(__dirname, '..', 'deployments', `${hre.network.name}.json`),
+      JSON.stringify({ CannonRegistry: contract.address }, null, 2)
+    );
 
     await hre.run('verify:verify', {
       address: contract.address,
