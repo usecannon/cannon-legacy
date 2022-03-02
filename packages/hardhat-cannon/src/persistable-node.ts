@@ -15,9 +15,7 @@ interface SerializableNodeState {
   minTimestamp: number;
 }
 
-export async function accessHreProvider(
-  hre: HardhatRuntimeEnvironment
-): Promise<HardhatNetworkProvider> {
+export async function accessHreProvider(hre: HardhatRuntimeEnvironment): Promise<HardhatNetworkProvider> {
   let provider = hre.network.provider;
 
   // triggers init if not already run
@@ -31,9 +29,7 @@ export async function accessHreProvider(
       provider._provider || provider._wrapped || provider._wrappedProvider;
 
     if (!provider) {
-      throw new Error(
-        'Hardhat Network must be in use to perform this operation'
-      );
+      throw new Error('Hardhat Network must be in use to perform this operation');
     }
   }
 
@@ -41,19 +37,14 @@ export async function accessHreProvider(
   return provider;
 }
 
-export async function storeHreNode(
-  hre: HardhatRuntimeEnvironment,
-  node: HardhatNode
-): Promise<void> {
+export async function storeHreNode(hre: HardhatRuntimeEnvironment, node: HardhatNode): Promise<void> {
   const provider = accessHreProvider(hre);
 
   // @ts-ignore
   provider._node = node;
 }
 
-export async function dumpState(
-  hre: HardhatRuntimeEnvironment
-): Promise<Buffer> {
+export async function dumpState(hre: HardhatRuntimeEnvironment): Promise<Buffer> {
   // @ts-ignore
   const node = (await accessHreProvider(hre))._node;
 
@@ -68,16 +59,11 @@ export async function dumpState(
   return deflatePromise(Buffer.from(JSON.stringify(state)));
 }
 
-export async function loadState(
-  hre: HardhatRuntimeEnvironment,
-  rawState: Buffer
-): Promise<boolean> {
+export async function loadState(hre: HardhatRuntimeEnvironment, rawState: Buffer): Promise<boolean> {
   // TODO: would be way better to utilize streaming here
   const deflatedState = await inflatePromise(rawState);
 
-  const state: SerializableNodeState = JSON.parse(
-    deflatedState.toString('utf8')
-  );
+  const state: SerializableNodeState = JSON.parse(deflatedState.toString('utf8'));
 
   const provider = await accessHreProvider(hre);
 
@@ -119,10 +105,7 @@ function trieDbDump(trie: Trie): Promise<[string, string][]> {
     trie.db._leveldb
       .createReadStream({ keyEncoding: 'binary', valueEncoding: 'binary' })
       .on('data', async (d: { key: string; value: string }) => {
-        dbData.push([
-          Buffer.from(d.key, 'binary').toString('hex'),
-          Buffer.from(d.value, 'binary').toString('hex'),
-        ]);
+        dbData.push([Buffer.from(d.key, 'binary').toString('hex'), Buffer.from(d.value, 'binary').toString('hex')]);
       })
       .on('end', () => {
         resolve(dbData);
@@ -148,10 +131,7 @@ function trieDump(trie: Trie): Promise<[string, string][]> {
   });
 }
 
-async function importStorage(
-  node: HardhatNode,
-  storage: { [key: string]: any }
-) {
+async function importStorage(node: HardhatNode, storage: { [key: string]: any }) {
   // @ts-ignore
   if (node._stateManager._state) {
     // ForkStateManager
@@ -165,10 +145,7 @@ async function importStorage(
   }
 }
 
-async function trieDbImport(
-  trie: Trie,
-  data: [string, string][]
-): Promise<void> {
+async function trieDbImport(trie: Trie, data: [string, string][]): Promise<void> {
   for (const [k, v] of data) {
     await trie.db._leveldb.put(Buffer.from(k, 'hex'), Buffer.from(v, 'hex'), {
       keyEncoding: 'binary',
@@ -179,10 +156,6 @@ async function trieDbImport(
 
 async function trieImport(trie: Trie, data: [string, string][]): Promise<void> {
   for (const [k, v] of data) {
-    await CheckpointTrie.prototype.put.call(
-      trie,
-      Buffer.from(k, 'hex'),
-      Buffer.from(v, 'hex')
-    );
+    await CheckpointTrie.prototype.put.call(trie, Buffer.from(k, 'hex'), Buffer.from(v, 'hex'));
   }
 }
