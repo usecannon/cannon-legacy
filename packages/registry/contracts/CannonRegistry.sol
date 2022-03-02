@@ -14,7 +14,7 @@ contract CannonRegistry {
   mapping(bytes32 => address) public owners;
 
   bytes32[] public protocols;
-  mapping(bytes32 => bytes32[]) versions;
+  mapping(bytes32 => bytes32[]) public versions;
 
   mapping(bytes32 => address) public nominatedOwner;
 

@@ -20,6 +20,7 @@ task(TASK_CANNON, 'Provision the current cannon.json file using Cannon')
   )
   .setAction(async ({ file, label, opts }, hre) => {
     let deploy: CannonDeploy | null = null;
+
     if (file) {
       deploy = (await hre.run(SUBTASK_LOAD_DEPLOY, {
         file,
@@ -39,7 +40,11 @@ task(TASK_CANNON, 'Provision the current cannon.json file using Cannon')
       // TODO: read from cannonfile
     }
 
-    for (const chainData of deploy!.chains) {
+    if (!deploy) {
+      throw new Error('Deploy configuration not found.');
+    }
+
+    for (const chainData of deploy.chains) {
       for (const provision of chainData.deploy) {
         let builder;
         if (typeof provision == 'string') {
