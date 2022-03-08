@@ -1,0 +1,17 @@
+{
+  "name": "@usecannon/contracts",
+  "version": "1.0.0",
+  "description": "Cannon builds for OpenZeppelin standard contract implementations for ERC20 & ERC721",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cannon",
+    "openzeppelin",
+    "erc20",
+    "erc721"
+  ],
+  "author": "Cannon",
+  "license": "MIT"
+}
