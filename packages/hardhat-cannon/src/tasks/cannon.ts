@@ -6,17 +6,13 @@ import { ChainBuilder } from '../builder';
 import { SUBTASK_DOWNLOAD, SUBTASK_LOAD_DEPLOY, SUBTASK_WRITE_DEPLOYMENTS, TASK_CANNON } from '../task-names';
 
 task(TASK_CANNON, 'Provision the current cannon.json file using Cannon')
-  .addOptionalParam('file', 'Custom cannon deployment file.')
+  .addOptionalParam('file', 'Custom cannon deployment file.', 'cannon.json')
   .addOptionalPositionalParam('label', 'Label of a chain to load')
   .addOptionalVariadicPositionalParam('opts', 'Settings to use for execution', [])
   .setAction(async ({ file, label, opts }, hre) => {
     let deploy: CannonDeploy | null = null;
 
-    if (file) {
-      deploy = (await hre.run(SUBTASK_LOAD_DEPLOY, {
-        file,
-      })) as CannonDeploy;
-    } else if (label) {
+    if (label) {
       const options = _.fromPairs(opts.map((o: string) => o.split('=')));
 
       deploy = {
@@ -28,7 +24,9 @@ task(TASK_CANNON, 'Provision the current cannon.json file using Cannon')
         ],
       };
     } else {
-      // TODO: read from cannonfile
+      deploy = (await hre.run(SUBTASK_LOAD_DEPLOY, {
+        file,
+      })) as CannonDeploy;
     }
 
     if (!deploy) {
