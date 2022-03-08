@@ -1,5 +1,5 @@
 name = "ERC20"
-description = "Cannon build for @openzeppelin/contracts/token/ERC20/ERC20.sol contract"
+description = "Official Cannon build for @openzeppelin/contracts/token/ERC20/ERC20.sol contract"
 tags = ["ERC20", "Token"]
 
 [setting.salt]
