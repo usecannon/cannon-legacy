@@ -33,20 +33,17 @@ task(TASK_CANNON, 'Provision the current cannon.json file using Cannon')
       throw new Error('Deploy configuration not found.');
     }
 
+    // TODO: implement multi chain compatibility (we're going to wait until hardhat
+    // has this functionality upstreamed).
     for (const chainData of deploy.chains) {
       for (const provision of chainData.deploy) {
-        let builder;
-        if (typeof provision == 'string') {
-          const [name, version] = provision.split(':');
-          await hre.run(SUBTASK_DOWNLOAD, { images: [provision] });
-          builder = new ChainBuilder({ name, version, hre });
-          await builder.build({});
-        } else {
-          const [name, version] = provision[0].split(':');
-          await hre.run(SUBTASK_DOWNLOAD, { images: [provision[0]] });
-          builder = new ChainBuilder({ name, version, hre });
-          await builder.build(provision[1]);
-        }
+        const image = typeof provision == 'string' ? provision : provision[0];
+        const options = typeof provision == 'string' ? {} : provision[1] ?? {};
+        const [name, version] = image.split(':');
+
+        await hre.run(SUBTASK_DOWNLOAD, { images: [image] });
+        const builder = new ChainBuilder({ name, version, hre });
+        await builder.build(options);
 
         await hre.run(SUBTASK_WRITE_DEPLOYMENTS, {
           outputs: builder.getOutputs(),
