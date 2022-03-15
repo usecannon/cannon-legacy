@@ -15,17 +15,17 @@ describe('Hardhat Runtime Environment', function () {
   before('load cannon node', async function () {
     this.timeout(30000);
 
-    await hre.run(TASK_BUILD, { file: 'cannonfile.erc20.toml' });
+    await hre.run(TASK_BUILD, { file: 'cannonfile.erc721.toml' });
 
     hre.run(TASK_CANNON, {
-      label: 'erc20:0.0.1',
+      label: 'erc721:0.0.1',
     });
 
     server = await waitForServer();
   });
 
   before('load module', async function () {
-    const content = await readFile(resolve(hre.config.paths.deployments, hre.network.name, 'ERC20.json'));
+    const content = await readFile(resolve(hre.config.paths.deployments, hre.network.name, 'ERC721.json'));
     const deployment = JSON.parse(content.toString()) as DeploymentArtifact;
     Token = await hre.ethers.getContractAt(deployment.abi, deployment.address);
   });
@@ -37,6 +37,5 @@ describe('Hardhat Runtime Environment', function () {
   it('can interact with default token deployment', async function () {
     equal(await Token.symbol(), 'TKN');
     equal(await Token.name(), 'Token');
-    equal(Number(await Token.totalSupply()), 0);
   });
 });

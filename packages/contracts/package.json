@@ -1,6 +1,6 @@
 {
   "name": "@usecannon/contracts",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Cannon builds for OpenZeppelin standard contract implementations for ERC20 & ERC721",
   "main": "hardhat.config.ts",
   "scripts": {
