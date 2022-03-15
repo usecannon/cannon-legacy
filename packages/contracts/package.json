@@ -2,7 +2,7 @@
   "name": "@usecannon/contracts",
   "version": "1.0.0",
   "description": "Cannon builds for OpenZeppelin standard contract implementations for ERC20 & ERC721",
-  "main": "hardhat.config.js",
+  "main": "hardhat.config.ts",
   "scripts": {
     "test": "mocha --exit ./test/**/*.test.ts"
   },
