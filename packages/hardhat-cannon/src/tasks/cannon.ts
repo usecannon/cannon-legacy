@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { task } from 'hardhat/config';
 
-import { CannonDeploy } from '../types';
+import { CannonDeploy } from '../../types';
 import { ChainBuilder } from '../builder';
 import { SUBTASK_DOWNLOAD, SUBTASK_LOAD_DEPLOY, SUBTASK_WRITE_DEPLOYMENTS, TASK_CANNON } from '../task-names';
 
