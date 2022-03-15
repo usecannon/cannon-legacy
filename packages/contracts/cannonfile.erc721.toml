@@ -1,4 +1,4 @@
-name = "ERC721"
+name = "erc721"
 description = "Official Cannon build for @openzeppelin/contracts/token/ERC721/ERC721.sol contract"
 tags = ["ERC721", "Token"]
 
@@ -11,7 +11,7 @@ defaultValue = "Token"
 [setting.symbol]
 defaultValue = "TKN"
 
-[contract.ERC721]
+[contract.erc721]
 artifact = "ERC721"
 args = ["<%= settings.name %>", "<%= settings.symbol %>"]
 salt = "<%= settings.salt %>"
